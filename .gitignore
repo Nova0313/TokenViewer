@@ -1,0 +1,27 @@
+# Build artifacts
+.build/
+dist/
+DerivedData/
+*.app
+*.ipa
+*.dmg
+
+# SwiftPM
+.swiftpm/
+Package.resolved
+
+# macOS
+.DS_Store
+._*
+
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.hmap
+
+# CocoaPods / Carthage
+Pods/
+Carthage/Build/

@@ -1,0 +1,598 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		06EBE36B5D4F279C8F53DDDE /* SharedQuotaSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBF974BA74307DCB1AA646D /* SharedQuotaSnapshot.swift */; };
+		12BF55D620BC02647404019F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9992CE72F803BE5AB3275E3E /* DashboardView.swift */; };
+		37398F622C6D73B4FED28AF7 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D23A2DACF71C6CCB79B559 /* Models.swift */; };
+		42976ED6BBFA07B13FD4412A /* LocalAppDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0342431483DA2AB0377472 /* LocalAppDiscovery.swift */; };
+		46BC6881B5510440DC41D9FB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D23A2DACF71C6CCB79B559 /* Models.swift */; };
+		472EC73998889F0D27DD2FE7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F751C39FD8A43361820AB6 /* ContentView.swift */; };
+		750309762000F8F85674865F /* TokenViewerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E4B6238FBEFD5FA82C32C9 /* TokenViewerWidget.swift */; };
+		7593B96D18EC9081784C16E3 /* QuotaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3448AA6BF3C6A9AABD4F43B /* QuotaStore.swift */; };
+		7B6EB81690A62C1F14803F8C /* QuotaReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA563875893915FE328024B7 /* QuotaReaderTests.swift */; };
+		875B4D705973975752034957 /* QuotaReaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5609A6A12DFF847C11CB786E /* QuotaReaders.swift */; };
+		8BB685CA37825F496EEE3F00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7AEBAAE10E57F1422A8B8CB /* Assets.xcassets */; };
+		9358A27B34A77C0B10809D0A /* TokenViewerWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2E8861F7B160E96619A20502 /* TokenViewerWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B41EBD830F6958D49C6DC3EA /* TokenViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024C37A534115AA220E03030 /* TokenViewerApp.swift */; };
+		BDD4B747C3EE1AA9E272AE1E /* SharedQuotaSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBF974BA74307DCB1AA646D /* SharedQuotaSnapshot.swift */; };
+		F620E9516C85C1F83C957B01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE256EDAB6A0F284E2965CBC /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0B8A4B36838BCEAB8016599F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B20CE0F4C4D38EB9BB4A81ED /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF8BFD7AA38F26D108FFF2E0;
+			remoteInfo = TokenViewer;
+		};
+		86DB7186F315496FCFC870BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B20CE0F4C4D38EB9BB4A81ED /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 88775D906D5DEA0ED7A16588;
+			remoteInfo = TokenViewerWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9986C3EF736EBCFE8E8A6260 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9358A27B34A77C0B10809D0A /* TokenViewerWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		024C37A534115AA220E03030 /* TokenViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenViewerApp.swift; sourceTree = "<group>"; };
+		04D23A2DACF71C6CCB79B559 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		2E8861F7B160E96619A20502 /* TokenViewerWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TokenViewerWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		47E4B6238FBEFD5FA82C32C9 /* TokenViewerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenViewerWidget.swift; sourceTree = "<group>"; };
+		5609A6A12DFF847C11CB786E /* QuotaReaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaReaders.swift; sourceTree = "<group>"; };
+		7C710A80148201C51072D6D0 /* TokenViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokenViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BBF974BA74307DCB1AA646D /* SharedQuotaSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedQuotaSnapshot.swift; sourceTree = "<group>"; };
+		9992CE72F803BE5AB3275E3E /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		BB0342431483DA2AB0377472 /* LocalAppDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAppDiscovery.swift; sourceTree = "<group>"; };
+		CE256EDAB6A0F284E2965CBC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D3448AA6BF3C6A9AABD4F43B /* QuotaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaStore.swift; sourceTree = "<group>"; };
+		DADE04DCA30B3557F5F2776F /* TokenViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokenViewerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4F751C39FD8A43361820AB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F7AEBAAE10E57F1422A8B8CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FA563875893915FE328024B7 /* QuotaReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaReaderTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0C32F3FCBDA0EC268ED84B60 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F7AEBAAE10E57F1422A8B8CB /* Assets.xcassets */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		2DD2E396DE190ABA2771A0EB /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				4050FA3ED3BF2863EAE8C07D /* TokenViewerTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		4050FA3ED3BF2863EAE8C07D /* TokenViewerTests */ = {
+			isa = PBXGroup;
+			children = (
+				FA563875893915FE328024B7 /* QuotaReaderTests.swift */,
+			);
+			path = TokenViewerTests;
+			sourceTree = "<group>";
+		};
+		5E0E43D2F9DE9964F0BBACD4 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				CE256EDAB6A0F284E2965CBC /* Assets.xcassets */,
+				47E4B6238FBEFD5FA82C32C9 /* TokenViewerWidget.swift */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		8DA0D55D7CE30DB5E24C8B5F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7C710A80148201C51072D6D0 /* TokenViewer.app */,
+				DADE04DCA30B3557F5F2776F /* TokenViewerTests.xctest */,
+				2E8861F7B160E96619A20502 /* TokenViewerWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		90F890FEB9B49143E93B949F = {
+			isa = PBXGroup;
+			children = (
+				0C32F3FCBDA0EC268ED84B60 /* App */,
+				F810913334974CB0E6037C72 /* Sources */,
+				2DD2E396DE190ABA2771A0EB /* Tests */,
+				5E0E43D2F9DE9964F0BBACD4 /* Widget */,
+				8DA0D55D7CE30DB5E24C8B5F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9432603671D6B0379E90C931 /* TokenViewer */ = {
+			isa = PBXGroup;
+			children = (
+				F4F751C39FD8A43361820AB6 /* ContentView.swift */,
+				9992CE72F803BE5AB3275E3E /* DashboardView.swift */,
+				BB0342431483DA2AB0377472 /* LocalAppDiscovery.swift */,
+				04D23A2DACF71C6CCB79B559 /* Models.swift */,
+				5609A6A12DFF847C11CB786E /* QuotaReaders.swift */,
+				D3448AA6BF3C6A9AABD4F43B /* QuotaStore.swift */,
+				8BBF974BA74307DCB1AA646D /* SharedQuotaSnapshot.swift */,
+				024C37A534115AA220E03030 /* TokenViewerApp.swift */,
+			);
+			path = TokenViewer;
+			sourceTree = "<group>";
+		};
+		F810913334974CB0E6037C72 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				9432603671D6B0379E90C931 /* TokenViewer */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04027ECEDB9042075642DE17 /* TokenViewerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0540AB0B727C1691D40E5C70 /* Build configuration list for PBXNativeTarget "TokenViewerTests" */;
+			buildPhases = (
+				5B3F85CEDF74C2B1370C5F56 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7830BC209EBE636970DF5F4D /* PBXTargetDependency */,
+			);
+			name = TokenViewerTests;
+			packageProductDependencies = (
+			);
+			productName = TokenViewerTests;
+			productReference = DADE04DCA30B3557F5F2776F /* TokenViewerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		88775D906D5DEA0ED7A16588 /* TokenViewerWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D72CC3F19DF5D54EB558B1CF /* Build configuration list for PBXNativeTarget "TokenViewerWidget" */;
+			buildPhases = (
+				316958F041FE9EC6D5A7423D /* Sources */,
+				4742273330BAC0E9909E368F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TokenViewerWidget;
+			packageProductDependencies = (
+			);
+			productName = TokenViewerWidget;
+			productReference = 2E8861F7B160E96619A20502 /* TokenViewerWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		CF8BFD7AA38F26D108FFF2E0 /* TokenViewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2D47A14B250D0D19E126B33 /* Build configuration list for PBXNativeTarget "TokenViewer" */;
+			buildPhases = (
+				BD265DBE173D35ECF1E9C0E1 /* Sources */,
+				EB7CCFDE2EB1DFF12A9CAF13 /* Resources */,
+				9986C3EF736EBCFE8E8A6260 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA31EC2A84A846618D6D7144 /* PBXTargetDependency */,
+			);
+			name = TokenViewer;
+			packageProductDependencies = (
+			);
+			productName = TokenViewer;
+			productReference = 7C710A80148201C51072D6D0 /* TokenViewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B20CE0F4C4D38EB9BB4A81ED /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					04027ECEDB9042075642DE17 = {
+						DevelopmentTeam = Y473VFKK58;
+					};
+					88775D906D5DEA0ED7A16588 = {
+						DevelopmentTeam = Y473VFKK58;
+						ProvisioningStyle = Automatic;
+					};
+					CF8BFD7AA38F26D108FFF2E0 = {
+						DevelopmentTeam = Y473VFKK58;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C8B1DC270D8AA81186527DE1 /* Build configuration list for PBXProject "TokenViewer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 90F890FEB9B49143E93B949F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8DA0D55D7CE30DB5E24C8B5F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CF8BFD7AA38F26D108FFF2E0 /* TokenViewer */,
+				04027ECEDB9042075642DE17 /* TokenViewerTests */,
+				88775D906D5DEA0ED7A16588 /* TokenViewerWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4742273330BAC0E9909E368F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F620E9516C85C1F83C957B01 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB7CCFDE2EB1DFF12A9CAF13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BB685CA37825F496EEE3F00 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		316958F041FE9EC6D5A7423D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46BC6881B5510440DC41D9FB /* Models.swift in Sources */,
+				BDD4B747C3EE1AA9E272AE1E /* SharedQuotaSnapshot.swift in Sources */,
+				750309762000F8F85674865F /* TokenViewerWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B3F85CEDF74C2B1370C5F56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B6EB81690A62C1F14803F8C /* QuotaReaderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD265DBE173D35ECF1E9C0E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				472EC73998889F0D27DD2FE7 /* ContentView.swift in Sources */,
+				12BF55D620BC02647404019F /* DashboardView.swift in Sources */,
+				42976ED6BBFA07B13FD4412A /* LocalAppDiscovery.swift in Sources */,
+				37398F622C6D73B4FED28AF7 /* Models.swift in Sources */,
+				875B4D705973975752034957 /* QuotaReaders.swift in Sources */,
+				7593B96D18EC9081784C16E3 /* QuotaStore.swift in Sources */,
+				06EBE36B5D4F279C8F53DDDE /* SharedQuotaSnapshot.swift in Sources */,
+				B41EBD830F6958D49C6DC3EA /* TokenViewerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7830BC209EBE636970DF5F4D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF8BFD7AA38F26D108FFF2E0 /* TokenViewer */;
+			targetProxy = 0B8A4B36838BCEAB8016599F /* PBXContainerItemProxy */;
+		};
+		DA31EC2A84A846618D6D7144 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 88775D906D5DEA0ED7A16588 /* TokenViewerWidget */;
+			targetProxy = 86DB7186F315496FCFC870BF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0F692F200F2DA2F47C7051A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/TokenViewerWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Config/Widget-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.widget;
+				PRODUCT_NAME = TokenViewerWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		0FC670551BEBF912AD5B90D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Config/TokenViewer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "Config/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar;
+				PRODUCT_NAME = TokenViewer;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		18004C9EC3110D856F7056CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokenViewer.app/Contents/MacOS/TokenViewer";
+			};
+			name = Debug;
+		};
+		1A510DC476E3038995D60661 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Y473VFKK58;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		5288AF84408A4440804D59AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/TokenViewerWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Config/Widget-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.widget;
+				PRODUCT_NAME = TokenViewerWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		585C8E358DA1DF37C54CF974 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Config/TokenViewer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "Config/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar;
+				PRODUCT_NAME = TokenViewer;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		615EDD2077AF2F8AEB096C3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Y473VFKK58;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		CFB158F33CC91B3BA9B8E005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokenViewer.app/Contents/MacOS/TokenViewer";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0540AB0B727C1691D40E5C70 /* Build configuration list for PBXNativeTarget "TokenViewerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				18004C9EC3110D856F7056CF /* Debug */,
+				CFB158F33CC91B3BA9B8E005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C8B1DC270D8AA81186527DE1 /* Build configuration list for PBXProject "TokenViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A510DC476E3038995D60661 /* Debug */,
+				615EDD2077AF2F8AEB096C3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D72CC3F19DF5D54EB558B1CF /* Build configuration list for PBXNativeTarget "TokenViewerWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F692F200F2DA2F47C7051A9 /* Debug */,
+				5288AF84408A4440804D59AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F2D47A14B250D0D19E126B33 /* Build configuration list for PBXNativeTarget "TokenViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				585C8E358DA1DF37C54CF974 /* Debug */,
+				0FC670551BEBF912AD5B90D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B20CE0F4C4D38EB9BB4A81ED /* Project object */;
+}

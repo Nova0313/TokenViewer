@@ -1,0 +1,94 @@
+name: TokenViewer
+options:
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+targets:
+  TokenViewer:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/TokenViewer
+      - path: App
+    info:
+      path: Config/App-Info.plist
+      properties:
+        CFBundleDisplayName: TokenViewer
+        CFBundleShortVersionString: "0.6.2"
+        CFBundleVersion: "19"
+        LSMinimumSystemVersion: "14.0"
+        LSUIElement: true
+        CFBundleURLTypes:
+          - CFBundleURLName: com.tokenviewer.menubar
+            CFBundleURLSchemes:
+              - tokenviewer
+    entitlements:
+      path: Config/TokenViewer.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.tokenviewer.shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tokenviewer.menubar
+        PRODUCT_NAME: TokenViewer
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
+    dependencies:
+      - target: TokenViewerWidget
+        embed: true
+  TokenViewerWidget:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Widget
+      - path: Sources/TokenViewer/SharedQuotaSnapshot.swift
+      - path: Sources/TokenViewer/Models.swift
+    info:
+      path: Config/Widget-Info.plist
+      properties:
+        CFBundleDisplayName: TokenViewer Widget
+        CFBundleShortVersionString: "0.6.2"
+        CFBundleVersion: "19"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: Config/TokenViewerWidget.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.application-groups:
+          - group.com.tokenviewer.shared
+        com.apple.security.temporary-exception.files.home-relative-path.read-only:
+          - /Library/Application Support/TokenViewer/
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tokenviewer.menubar.widget
+        PRODUCT_NAME: TokenViewerWidget
+        CODE_SIGN_STYLE: Automatic
+        SKIP_INSTALL: YES
+  TokenViewerTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/TokenViewerTests
+    dependencies:
+      - target: TokenViewer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tokenviewer.menubar.tests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  TokenViewer:
+    build:
+      targets:
+        TokenViewer: all
+        TokenViewerWidget: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TokenViewerTests
