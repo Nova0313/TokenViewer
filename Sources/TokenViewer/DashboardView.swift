@@ -326,7 +326,7 @@ private struct ServiceCard: View {
                 .buttonStyle(.borderless)
                 .help("解绑")
 
-                Image(systemName: "circle.grid.2x3.fill")
+                Image(systemName: serviceWindowsIconName)
                     .foregroundStyle(.tertiary)
             }
 
@@ -402,6 +402,13 @@ private struct ServiceCard: View {
 
     private var iconTint: Color {
         binding.provider == .codex ? .blue : .orange
+    }
+
+    private var serviceWindowsIconName: String {
+        if #available(macOS 15.0, *) {
+            return "circle.grid.2x3.fill"
+        }
+        return "circle.grid.3x3.fill"
     }
 
     @ViewBuilder
