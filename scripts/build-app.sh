@@ -41,7 +41,7 @@ cat > "$CONTENTS_DIR/Info.plist" <<'PLIST'
     <key>CFBundleExecutable</key>
     <string>TokenViewer</string>
     <key>CFBundleIdentifier</key>
-    <string>com.tokenviewer.menubar</string>
+    <string>com.qianchen.tokenviewer</string>
     <key>CFBundleName</key>
     <string>TokenViewer</string>
     <key>CFBundleIconFile</key>

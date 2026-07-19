@@ -126,4 +126,64 @@ final class QuotaReaderTests: XCTestCase {
             resetDetectedAt: resetDetectedAt
         )
     }
+
+    func testDeepSeekBalanceParserParsesStandardResponse() throws {
+        let json = """
+        {
+          "is_available": true,
+          "balance_infos": [
+            {
+              "currency": "CNY",
+              "total_balance": "9.99",
+              "granted_balance": "0.00",
+              "topped_up_balance": "9.99"
+            }
+          ]
+        }
+        """.data(using: .utf8)!
+
+        let object = try JSONSerialization.jsonObject(with: json)
+        let windows = DeepSeekBalanceParser.parse(object: object)
+
+        XCTAssertEqual(windows.count, 2) // 总余额 + 充值
+        XCTAssertEqual(windows[0].name, "总余额")
+        XCTAssertEqual(windows[0].displayText, "¥9.99")
+        XCTAssertEqual(windows[0].displayMode, .balance)
+        XCTAssertEqual(windows[0].usedPercent, 0) // 可用 → 0% 已用
+
+        XCTAssertEqual(windows[1].name, "充值")
+        XCTAssertEqual(windows[1].displayText, "¥9.99")
+    }
+
+    func testDeepSeekBalanceParserHandlesUnavailable() throws {
+        let json = """
+        {
+          "is_available": false,
+          "balance_infos": [
+            { "currency": "USD", "total_balance": "0.00", "granted_balance": "0.00", "topped_up_balance": "0.00" }
+          ]
+        }
+        """.data(using: .utf8)!
+
+        let object = try JSONSerialization.jsonObject(with: json)
+        let windows = DeepSeekBalanceParser.parse(object: object)
+
+        XCTAssertEqual(windows.count, 1)
+        XCTAssertEqual(windows[0].displayText, "$0.00")
+        XCTAssertEqual(windows[0].usedPercent, 100) // 不可用 → 100% 已用
+    }
+
+    func testDeepSeekBalanceParserRejectsMalformedInput() {
+        let windows1 = DeepSeekBalanceParser.parse(object: "not a dict")
+        XCTAssertTrue(windows1.isEmpty)
+
+        let windows2 = DeepSeekBalanceParser.parse(object: ["is_available": true])
+        XCTAssertTrue(windows2.isEmpty)
+
+        let windows3 = DeepSeekBalanceParser.parse(object: [
+            "is_available": true,
+            "balance_infos": [["currency": "CNY"]] // 缺 total_balance
+        ])
+        XCTAssertTrue(windows3.isEmpty)
+    }
 }

@@ -5,13 +5,18 @@ struct ContentView: View {
     @ObservedObject var store: QuotaStore
     @State private var isManaging = false
     @State private var providerPendingRemoval: LocalProvider?
+    @State private var apiProviderPendingRemoval: APIProviderConfig?
 
     var body: some View {
         VStack(spacing: 14) {
             header
 
             if isManaging {
-                BindingManager(store: store, providerPendingRemoval: $providerPendingRemoval)
+                BindingManager(
+                    store: store,
+                    providerPendingRemoval: $providerPendingRemoval,
+                    apiProviderPendingRemoval: $apiProviderPendingRemoval
+                )
             } else {
                 overview
             }
@@ -38,6 +43,24 @@ struct ContentView: View {
             }
         } message: { provider in
             Text("只会从 TokenViewer 移除 \(provider.name)，不会删除它的本地数据。")
+        }
+        .alert(
+            "删除 API 配置？",
+            isPresented: Binding(
+                get: { apiProviderPendingRemoval != nil },
+                set: { if !$0 { apiProviderPendingRemoval = nil } }
+            ),
+            presenting: apiProviderPendingRemoval
+        ) { config in
+            Button("删除", role: .destructive) {
+                store.removeAPIProvider(config)
+                apiProviderPendingRemoval = nil
+            }
+            Button("取消", role: .cancel) {
+                apiProviderPendingRemoval = nil
+            }
+        } message: { config in
+            Text("将删除 \(config.name) 配置及其 Keychain 中的 API Key。")
         }
     }
 
@@ -74,18 +97,18 @@ struct ContentView: View {
 
     @ViewBuilder
     private var overview: some View {
-        if store.bindings.isEmpty {
+        if store.bindings.isEmpty && store.apiProviders.isEmpty {
             VStack(spacing: 10) {
                 Image(systemName: "square.stack.3d.up.slash")
                     .font(.system(size: 30))
                     .foregroundStyle(.secondary)
-                Text("还没有绑定本地 AI App")
+                Text("还没有配置 AI 服务")
                     .font(.subheadline.weight(.medium))
-                Text("添加后即可查看额度，并同步到桌面小组件。")
+                Text("可检测本地 Codex 日志，或填入 API 配置拉取额度。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
-                Button("添加本地 AI App") {
+                Button("去配置") {
                     isManaging = true
                 }
             }
@@ -110,7 +133,7 @@ struct ContentView: View {
             if !isManaging, let date = store.lastRefresh {
                 Text("更新于 \(date.formatted(date: .omitted, time: .shortened))")
             } else if isManaging {
-                Text("\(store.bindings.count) 个已绑定")
+                Text("\(store.bindings.count) 本地 · \(store.apiProviders.count) API")
             }
             Spacer()
             Button("退出") {
@@ -126,15 +149,119 @@ struct ContentView: View {
 private struct BindingManager: View {
     @ObservedObject var store: QuotaStore
     @Binding var providerPendingRemoval: LocalProvider?
+    @Binding var apiProviderPendingRemoval: APIProviderConfig?
+    @State private var showingAddAPIProvider = false
+    @State private var editingAPIProvider: APIProviderConfig?
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 boundSection
                 availableSection
+                apiProviderSection
             }
         }
         .frame(maxHeight: .infinity)
+        .sheet(isPresented: $showingAddAPIProvider) {
+            AddAPIProviderView(store: store)
+        }
+        .sheet(item: $editingAPIProvider) { config in
+            EditAPIProviderView(store: store, config: config)
+        }
+    }
+
+    private var apiProviderSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("API 配置")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Button {
+                    showingAddAPIProvider = true
+                } label: {
+                    Label("添加 API", systemImage: "plus")
+                }
+                .buttonStyle(.borderless)
+                .font(.caption)
+            }
+
+            if store.apiProviders.isEmpty {
+                Text("尚未添加 API 配置，点击「添加 API」选择预设模板（通用/NewAPI/Token Plan/官方/智谱/DeepSeek）即可拉取额度。")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(12)
+                    .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
+            } else {
+                ForEach(store.apiProviders) { config in
+                    apiProviderRow(config)
+                }
+            }
+        }
+    }
+
+    private func apiProviderRow(_ config: APIProviderConfig) -> some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 10) {
+                Image(systemName: config.template.symbol)
+                    .frame(width: 22)
+                    .foregroundStyle(.blue)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(config.name)
+                        .font(.subheadline.weight(.medium))
+                    HStack(spacing: 4) {
+                        Text(config.template.displayName)
+                            .font(.caption2.weight(.medium))
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 1)
+                            .background(.blue.opacity(0.12), in: Capsule())
+                        Text(config.baseURL.host ?? config.baseURL.absoluteString)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                }
+                Spacer()
+                Button {
+                    Task { await store.refreshAPI(config) }
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .buttonStyle(.borderless)
+                .disabled(store.isRefreshing(config))
+                .help("刷新")
+
+                Button {
+                    editingAPIProvider = config
+                } label: {
+                    Image(systemName: "pencil")
+                }
+                .buttonStyle(.borderless)
+                .help("编辑")
+
+                Button(role: .destructive) {
+                    apiProviderPendingRemoval = config
+                } label: {
+                    Image(systemName: "trash")
+                }
+                .buttonStyle(.borderless)
+                .help("删除")
+            }
+
+            Toggle(
+                "显示在桌面小组件",
+                isOn: Binding(
+                    get: { config.showInWidget },
+                    set: { store.setShowInWidget($0, for: config) }
+                )
+            )
+            .toggleStyle(.switch)
+            .controlSize(.mini)
+            .font(.caption)
+        }
+        .padding(10)
+        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
     }
 
     private var boundSection: some View {
@@ -313,13 +440,23 @@ private struct QuotaRow: View {
             HStack {
                 Text(window.name)
                 Spacer()
-                Text(resetText)
-                    .foregroundStyle(.secondary)
+                if window.displayMode == .balance {
+                    Text(window.displayText ?? "—")
+                        .foregroundStyle(tint)
+                } else {
+                    Text(resetText)
+                        .foregroundStyle(.secondary)
+                }
             }
             .font(.caption)
 
-            ProgressView(value: window.remainingPercent, total: 100)
-                .tint(tint)
+            if window.displayMode == .balance {
+                // 余额模式：用细线表示可用状态
+                Divider().tint(tint.opacity(0.4))
+            } else {
+                ProgressView(value: window.remainingPercent, total: 100)
+                    .tint(tint)
+            }
         }
     }
 
@@ -330,6 +467,9 @@ private struct QuotaRow: View {
     }
 
     private var tint: Color {
+        if window.displayMode == .balance {
+            return window.usedPercent >= 100 ? .red : .green
+        }
         if window.remainingPercent <= 10 { return .red }
         if window.remainingPercent <= 30 { return .orange }
         return .accentColor

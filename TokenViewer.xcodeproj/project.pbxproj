@@ -21,6 +21,7 @@
 		9358A27B34A77C0B10809D0A /* TokenViewerWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2E8861F7B160E96619A20502 /* TokenViewerWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B41EBD830F6958D49C6DC3EA /* TokenViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024C37A534115AA220E03030 /* TokenViewerApp.swift */; };
 		BDD4B747C3EE1AA9E272AE1E /* SharedQuotaSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBF974BA74307DCB1AA646D /* SharedQuotaSnapshot.swift */; };
+		D328EAD60DEB7D948AC1F57C /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115FACE12C66128DE577C368 /* KeychainHelper.swift */; };
 		F620E9516C85C1F83C957B01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE256EDAB6A0F284E2965CBC /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 /* Begin PBXFileReference section */
 		024C37A534115AA220E03030 /* TokenViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenViewerApp.swift; sourceTree = "<group>"; };
 		04D23A2DACF71C6CCB79B559 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		115FACE12C66128DE577C368 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		2E8861F7B160E96619A20502 /* TokenViewerWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TokenViewerWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E4B6238FBEFD5FA82C32C9 /* TokenViewerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenViewerWidget.swift; sourceTree = "<group>"; };
 		5609A6A12DFF847C11CB786E /* QuotaReaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaReaders.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			children = (
 				F4F751C39FD8A43361820AB6 /* ContentView.swift */,
 				9992CE72F803BE5AB3275E3E /* DashboardView.swift */,
+				115FACE12C66128DE577C368 /* KeychainHelper.swift */,
 				BB0342431483DA2AB0377472 /* LocalAppDiscovery.swift */,
 				04D23A2DACF71C6CCB79B559 /* Models.swift */,
 				5609A6A12DFF847C11CB786E /* QuotaReaders.swift */,
@@ -219,15 +222,10 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					04027ECEDB9042075642DE17 = {
-						DevelopmentTeam = Y473VFKK58;
-					};
 					88775D906D5DEA0ED7A16588 = {
-						DevelopmentTeam = Y473VFKK58;
 						ProvisioningStyle = Automatic;
 					};
 					CF8BFD7AA38F26D108FFF2E0 = {
-						DevelopmentTeam = Y473VFKK58;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -297,6 +295,7 @@
 			files = (
 				472EC73998889F0D27DD2FE7 /* ContentView.swift in Sources */,
 				12BF55D620BC02647404019F /* DashboardView.swift in Sources */,
+				D328EAD60DEB7D948AC1F57C /* KeychainHelper.swift in Sources */,
 				42976ED6BBFA07B13FD4412A /* LocalAppDiscovery.swift in Sources */,
 				37398F622C6D73B4FED28AF7 /* Models.swift in Sources */,
 				875B4D705973975752034957 /* QuotaReaders.swift in Sources */,
@@ -328,13 +327,14 @@
 				CODE_SIGN_ENTITLEMENTS = Config/TokenViewerWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y473VFKK58;
 				INFOPLIST_FILE = "Config/Widget-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianchen.tokenviewer.widget;
 				PRODUCT_NAME = TokenViewerWidget;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -348,13 +348,14 @@
 				CODE_SIGN_ENTITLEMENTS = Config/TokenViewer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y473VFKK58;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Config/App-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianchen.tokenviewer;
 				PRODUCT_NAME = TokenViewer;
 				SDKROOT = macosx;
 			};
@@ -371,7 +372,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianchen.tokenviewer.tests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokenViewer.app/Contents/MacOS/TokenViewer";
 			};
@@ -412,7 +413,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = Y473VFKK58;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -447,13 +447,14 @@
 				CODE_SIGN_ENTITLEMENTS = Config/TokenViewerWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y473VFKK58;
 				INFOPLIST_FILE = "Config/Widget-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianchen.tokenviewer.widget;
 				PRODUCT_NAME = TokenViewerWidget;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -467,13 +468,14 @@
 				CODE_SIGN_ENTITLEMENTS = Config/TokenViewer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y473VFKK58;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Config/App-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianchen.tokenviewer;
 				PRODUCT_NAME = TokenViewer;
 				SDKROOT = macosx;
 			};
@@ -514,7 +516,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = Y473VFKK58;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -547,7 +548,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tokenviewer.menubar.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianchen.tokenviewer.tests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokenViewer.app/Contents/MacOS/TokenViewer";
 			};

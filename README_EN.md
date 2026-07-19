@@ -46,7 +46,7 @@ open TokenViewer.xcodeproj
 In Xcode:
 
 1. Select your own development team for both the `TokenViewer` and `TokenViewerWidget` targets (`DEVELOPMENT_TEAM` is left empty in `project.yml`; contributors need to set it themselves).
-2. Confirm both targets use the same App Group; the default is `group.com.tokenviewer.shared`.
+2. Confirm both targets use the same App Group; the default is `group.com.qianchen.tokenviewer.shared`.
 3. Select the `TokenViewer` scheme and click Run.
 
 After launch, the app appears only in the menu bar and does not occupy the Dock.

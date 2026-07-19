@@ -2,11 +2,11 @@ import Foundation
 import OSLog
 
 enum SharedQuotaStorage {
-    static let appGroup = "group.com.tokenviewer.shared"
+    static let appGroup = "group.com.qianchen.tokenviewer.shared"
     static let snapshotKey = "quotaSnapshot"
     private static let snapshotFileName = "quota-snapshot.json"
     private static let logger = Logger(
-        subsystem: "com.tokenviewer.menubar",
+        subsystem: "com.qianchen.tokenviewer",
         category: "SharedQuotaStorage"
     )
 
@@ -26,6 +26,8 @@ enum SharedQuotaStorage {
                         id: window.id,
                         name: window.name,
                         remainingPercent: window.remainingPercent,
+                        displayText: window.displayText,
+                        displayMode: snapshotDisplayMode(for: window.displayMode),
                         resetAt: window.resetAt,
                         resetDetectedAt: detectedResetDate(
                             previousRemainingPercent: previousWindow?.remainingPercent,
@@ -155,16 +157,69 @@ enum SharedQuotaStorage {
         }
         return existing
     }
+
+    private static func snapshotDisplayMode(for mode: QuotaWindow.DisplayMode) -> QuotaSnapshot.Provider.WindowDisplayMode {
+        switch mode {
+        case .percent: return .percent
+        case .balance: return .balance
+        }
+    }
 }
 
 struct QuotaSnapshot: Codable, Equatable, Sendable {
     struct Provider: Codable, Equatable, Identifiable, Sendable {
+        enum WindowDisplayMode: String, Codable, Equatable, Sendable {
+            case percent
+            case balance
+        }
+
         struct Window: Codable, Equatable, Identifiable, Sendable {
             let id: String
             let name: String
             let remainingPercent: Double?
+            let displayText: String?
+            let displayMode: WindowDisplayMode?
             let resetAt: Date?
             let resetDetectedAt: Date?
+
+            enum CodingKeys: String, CodingKey {
+                case id
+                case name
+                case remainingPercent
+                case displayText
+                case displayMode
+                case resetAt
+                case resetDetectedAt
+            }
+
+            init(
+                id: String,
+                name: String,
+                remainingPercent: Double?,
+                displayText: String? = nil,
+                displayMode: WindowDisplayMode? = nil,
+                resetAt: Date?,
+                resetDetectedAt: Date?
+            ) {
+                self.id = id
+                self.name = name
+                self.remainingPercent = remainingPercent
+                self.displayText = displayText
+                self.displayMode = displayMode
+                self.resetAt = resetAt
+                self.resetDetectedAt = resetDetectedAt
+            }
+
+            init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                id = try container.decode(String.self, forKey: .id)
+                name = try container.decode(String.self, forKey: .name)
+                remainingPercent = try container.decodeIfPresent(Double.self, forKey: .remainingPercent)
+                displayText = try container.decodeIfPresent(String.self, forKey: .displayText)
+                displayMode = try container.decodeIfPresent(WindowDisplayMode.self, forKey: .displayMode)
+                resetAt = try container.decodeIfPresent(Date.self, forKey: .resetAt)
+                resetDetectedAt = try container.decodeIfPresent(Date.self, forKey: .resetDetectedAt)
+            }
 
             func petMood(at date: Date) -> QuotaPetMood {
                 guard let remainingPercent else { return .disconnected }

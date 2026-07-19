@@ -21,19 +21,22 @@ targets:
         CFBundleShortVersionString: "0.6.2"
         CFBundleVersion: "19"
         LSMinimumSystemVersion: "14.0"
-        LSUIElement: true
+        LSUIElement: false
         CFBundleURLTypes:
-          - CFBundleURLName: com.tokenviewer.menubar
+          - CFBundleURLName: com.qianchen.tokenviewer
             CFBundleURLSchemes:
               - tokenviewer
     entitlements:
       path: Config/TokenViewer.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.tokenviewer.shared
+          - group.com.qianchen.tokenviewer.shared
+        com.apple.security.temporary-exception.files.home-relative-path.read-only:
+          - /.codex/
+          - /.claude/
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.tokenviewer.menubar
+        PRODUCT_BUNDLE_IDENTIFIER: com.qianchen.tokenviewer
         PRODUCT_NAME: TokenViewer
         CODE_SIGN_STYLE: Automatic
         ENABLE_HARDENED_RUNTIME: YES
@@ -60,12 +63,12 @@ targets:
       properties:
         com.apple.security.app-sandbox: true
         com.apple.security.application-groups:
-          - group.com.tokenviewer.shared
+          - group.com.qianchen.tokenviewer.shared
         com.apple.security.temporary-exception.files.home-relative-path.read-only:
           - /Library/Application Support/TokenViewer/
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.tokenviewer.menubar.widget
+        PRODUCT_BUNDLE_IDENTIFIER: com.qianchen.tokenviewer.widget
         PRODUCT_NAME: TokenViewerWidget
         CODE_SIGN_STYLE: Automatic
         SKIP_INSTALL: YES
@@ -78,7 +81,7 @@ targets:
       - target: TokenViewer
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.tokenviewer.menubar.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.qianchen.tokenviewer.tests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
   TokenViewer:

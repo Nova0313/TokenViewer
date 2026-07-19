@@ -13,7 +13,7 @@ struct SmallDashboardWidgetIntent: WidgetConfigurationIntent {
     var style: DashboardDisplayStyle?
 
     init() {
-        metric1 = .codexShortTerm
+        metric1 = nil
         style = .cleanCard
     }
 }
@@ -38,8 +38,8 @@ struct MediumDashboardWidgetIntent: WidgetConfigurationIntent {
     var style: DashboardDisplayStyle?
 
     init() {
-        metric1 = .codexShortTerm
-        metric2 = .codexWeekly
+        metric1 = nil
+        metric2 = nil
         metric3 = nil
         metric4 = nil
         style = .cleanCard
@@ -64,32 +64,59 @@ enum DashboardDisplayStyle: String, AppEnum {
     ]
 }
 
-enum DashboardQuotaMetric: String, AppEnum {
-    case codexShortTerm
-    case codexWeekly
-    case claudeShortTerm
-    case claudeWeekly
+struct DashboardQuotaMetric: AppEntity {
+    let id: String
+    let providerID: String
+    let providerName: String
+    let windowID: String
+    let windowName: String
 
     static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "额度量")
-    static let caseDisplayRepresentations: [DashboardQuotaMetric: DisplayRepresentation] = [
-        .codexShortTerm: DisplayRepresentation(title: "Codex · 短期额度"),
-        .codexWeekly: DisplayRepresentation(title: "Codex · 周额度"),
-        .claudeShortTerm: DisplayRepresentation(title: "Claude Code · 短期额度"),
-        .claudeWeekly: DisplayRepresentation(title: "Claude Code · 周额度")
-    ]
+    static let defaultQuery = DashboardQuotaMetricQuery()
 
-    var service: PetAIService {
-        switch self {
-        case .codexShortTerm, .codexWeekly: .codex
-        case .claudeShortTerm, .claudeWeekly: .claude
-        }
+    var displayRepresentation: DisplayRepresentation {
+        return DisplayRepresentation(title: "\(providerName)（\(windowName)）")
+    }
+}
+
+struct DashboardQuotaMetricQuery: EntityQuery {
+    func entities(for identifiers: [String]) async throws -> [DashboardQuotaMetric] {
+        let allMetrics = await loadAvailableMetrics()
+        return allMetrics.filter { identifiers.contains($0.id) }
     }
 
-    var period: PetQuotaPeriod {
-        switch self {
-        case .codexShortTerm, .claudeShortTerm: .shortTerm
-        case .codexWeekly, .claudeWeekly: .weekly
+    func suggestedEntities() async throws -> [DashboardQuotaMetric] {
+        return await loadAvailableMetrics()
+    }
+
+    private func loadAvailableMetrics() async -> [DashboardQuotaMetric] {
+        let snapshot = SharedQuotaStorage.load()
+        var metrics: [DashboardQuotaMetric] = []
+
+        for provider in snapshot.providers where provider.isAvailable {
+            for window in provider.windows {
+                let metric = DashboardQuotaMetric(
+                    id: "\(provider.id)_\(window.id)",
+                    providerID: provider.id,
+                    providerName: provider.name,
+                    windowID: window.id,
+                    windowName: window.name
+                )
+                metrics.append(metric)
+            }
+            // 如果 provider 没有 windows，创建一个默认的
+            if provider.windows.isEmpty {
+                let metric = DashboardQuotaMetric(
+                    id: "\(provider.id)_default",
+                    providerID: provider.id,
+                    providerName: provider.name,
+                    windowID: "default",
+                    windowName: provider.periodName ?? "额度"
+                )
+                metrics.append(metric)
+            }
         }
+        return metrics
     }
 }
 
@@ -98,31 +125,27 @@ struct DashboardQuotaEntry: TimelineEntry {
     let snapshot: QuotaSnapshot
     let configuration: DashboardConfiguration
 
-    var metrics: [(service: PetAIService, period: PetQuotaPeriod)?] {
-        configuration.metrics.map { metric in
-            metric.map { ($0.service, $0.period) }
-        }
-    }
+    /// 解析后的指标列表，每项对应一个配置槽位（可能为 nil）
+    var resolvedMetrics: [(provider: QuotaSnapshot.Provider, window: QuotaSnapshot.Provider.Window?)?] {
+        return configuration.metrics.map { metric -> (QuotaSnapshot.Provider, QuotaSnapshot.Provider.Window?)? in
+            guard let metric else { return nil }
 
-    func resolve(
-        metric: (service: PetAIService, period: PetQuotaPeriod)
-    ) -> (provider: QuotaSnapshot.Provider?, window: QuotaSnapshot.Provider.Window?) {
-        let provider = snapshot.providers.first { $0.id == metric.service.rawValue }
-        let window: QuotaSnapshot.Provider.Window?
-        if let resolved = provider?.window(id: metric.period.windowID) {
-            window = resolved
-        } else if metric.period == .shortTerm, let provider {
-            window = QuotaSnapshot.Provider.Window(
-                id: metric.period.windowID,
-                name: provider.periodName ?? "短期额度",
-                remainingPercent: provider.remainingPercent,
-                resetAt: provider.resetAt,
-                resetDetectedAt: provider.resetDetectedAt
-            )
-        } else {
-            window = nil
+            // 根据 providerID 查找对应的 provider
+            guard let provider = snapshot.providers.first(where: { $0.id == metric.providerID }) else { return nil }
+
+            // 根据 windowID 查找对应的 window
+            let window: QuotaSnapshot.Provider.Window?
+            if metric.windowID == "default" {
+                // 默认窗口：选择剩余百分比最低的窗口
+                window = provider.windows.min {
+                    ($0.remainingPercent ?? 100) < ($1.remainingPercent ?? 100)
+                } ?? provider.windows.first
+            } else {
+                window = provider.window(id: metric.windowID)
+            }
+
+            return (provider, window)
         }
-        return (provider, window)
     }
 }
 
@@ -131,7 +154,7 @@ struct SmallDashboardTimelineProvider: AppIntentTimelineProvider {
         DashboardQuotaEntry(
             date: .now,
             snapshot: .placeholder,
-            configuration: DashboardConfiguration(metrics: [.codexShortTerm], style: .cleanCard)
+            configuration: DashboardConfiguration(metrics: [nil], style: .cleanCard)
         )
     }
 
@@ -173,7 +196,7 @@ struct MediumDashboardTimelineProvider: AppIntentTimelineProvider {
             date: .now,
             snapshot: .placeholder,
             configuration: DashboardConfiguration(
-                metrics: [.codexShortTerm, .codexWeekly, nil, nil],
+                metrics: [nil, nil, nil, nil],
                 style: .cleanCard
             )
         )
@@ -241,17 +264,12 @@ struct TokenViewerWidgetView: View {
 
     private var smallLayout: some View {
         return Group {
-            if let metric = entry.metrics.first ?? nil {
-                let resolved = entry.resolve(metric: metric)
-                if let provider = resolved.provider {
-                    DashboardCard(
-                        provider: provider,
-                        window: resolved.window,
-                        style: style
-                    )
-                } else {
-                    EmptyDashboardSlot(compact: true, style: style)
-                }
+            if let resolved = entry.resolvedMetrics.first ?? nil {
+                DashboardCard(
+                    provider: resolved.provider,
+                    window: resolved.window,
+                    style: style
+                )
             } else {
                 EmptyDashboardSlot(compact: true, style: style)
             }
@@ -260,29 +278,25 @@ struct TokenViewerWidgetView: View {
     }
 
     private var mediumLayout: some View {
-        let metrics = Array(entry.metrics.prefix(4))
+        let resolvedMetrics = Array(entry.resolvedMetrics.prefix(4))
         return VStack(spacing: 5) {
-            HStack(alignment: .center, spacing: metrics.count >= 4 ? 8 : 18) {
-                ForEach(Array(metrics.enumerated()), id: \.offset) { _, metric in
-                    if let metric {
-                        let resolved = entry.resolve(metric: metric)
-                        if let provider = resolved.provider {
-                            QuotaRing(
-                                name: provider.name,
-                                symbol: provider.symbol,
-                                windowName: resolved.window?.name,
-                                remaining: resolved.window?.remainingPercent,
-                                resetAt: resolved.window?.resetAt,
-                                isAvailable: provider.isAvailable,
-                                compact: false,
-                                style: style,
-                                showsCountdown: true
-                            )
-                            .frame(maxWidth: .infinity)
-                        } else {
-                            EmptyDashboardSlot(compact: false, style: style)
-                                .frame(maxWidth: .infinity)
-                        }
+            HStack(alignment: .center, spacing: resolvedMetrics.count >= 4 ? 8 : 18) {
+                ForEach(Array(resolvedMetrics.enumerated()), id: \.offset) { _, resolved in
+                    if let resolved {
+                        QuotaRing(
+                            name: resolved.provider.name,
+                            symbol: resolved.provider.symbol,
+                            windowName: resolved.window?.name,
+                            remaining: resolved.window?.remainingPercent,
+                            resetAt: resolved.window?.resetAt,
+                            isAvailable: resolved.provider.isAvailable,
+                            compact: false,
+                            style: style,
+                            showsCountdown: true,
+                            displayText: resolved.window?.displayText,
+                            displayMode: resolved.window?.displayMode
+                        )
+                        .frame(maxWidth: .infinity)
                     } else {
                         EmptyDashboardSlot(compact: false, style: style)
                             .frame(maxWidth: .infinity)
@@ -323,12 +337,16 @@ private struct DashboardCard: View {
     let window: QuotaSnapshot.Provider.Window?
     let style: DashboardDisplayStyle
 
+    private var isBalanceMode: Bool {
+        window?.displayMode == .balance
+    }
+
     private var remaining: Double {
         max(0, min(100, window?.remainingPercent ?? 0))
     }
 
     private var progress: Double {
-        remaining / 100
+        isBalanceMode ? 1 : remaining / 100
     }
 
     private var foreground: Color {
@@ -340,7 +358,15 @@ private struct DashboardCard: View {
     }
 
     private var accent: Color {
-        guard provider.isAvailable, window?.remainingPercent != nil else {
+        guard provider.isAvailable else {
+            return foreground.opacity(0.25)
+        }
+        if isBalanceMode {
+            return style == .cleanCard
+                ? Color(red: 0.20, green: 0.50, blue: 0.96)
+                : Color(red: 0.13, green: 0.77, blue: 0.37)
+        }
+        guard window?.remainingPercent != nil else {
             return foreground.opacity(0.25)
         }
         if remaining < 20 { return Color(red: 0.94, green: 0.27, blue: 0.27) }
@@ -348,6 +374,14 @@ private struct DashboardCard: View {
         return style == .cleanCard
             ? Color(red: 0.20, green: 0.50, blue: 0.96)
             : Color(red: 0.13, green: 0.77, blue: 0.37)
+    }
+
+    private var displayValue: String {
+        guard provider.isAvailable else { return "--" }
+        if isBalanceMode, let text = window?.displayText {
+            return text
+        }
+        return "\(Int(remaining.rounded()))%"
     }
 
     var body: some View {
@@ -376,9 +410,11 @@ private struct DashboardCard: View {
                         .stroke(accent, style: StrokeStyle(lineWidth: 7, lineCap: .round))
                         .rotationEffect(.degrees(-90))
                     VStack(spacing: 0) {
-                        Text(provider.isAvailable ? "\(Int(remaining.rounded()))%" : "--")
-                            .font(.system(size: 18, weight: .heavy, design: .rounded))
-                        Text("剩余额度")
+                        Text(displayValue)
+                            .font(.system(size: isBalanceMode ? 14 : 18, weight: .heavy, design: .rounded))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                        Text(isBalanceMode ? "余额" : "剩余额度")
                             .font(.system(size: 8, weight: .medium))
                             .foregroundStyle(secondary)
                     }
@@ -387,9 +423,13 @@ private struct DashboardCard: View {
             }
 
             HStack(spacing: 9) {
-                stat(title: "已用", value: "\(Int((100 - remaining).rounded()))%")
+                if isBalanceMode {
+                    stat(title: "类型", value: window?.name ?? "余额")
+                } else {
+                    stat(title: "已用", value: "\(Int((100 - remaining).rounded()))%")
+                }
                 Rectangle().fill(foreground.opacity(0.13)).frame(width: 1, height: 24)
-                stat(title: "总额度", value: window?.name ?? "未配置")
+                stat(title: "窗口", value: window?.name ?? "未配置")
             }
             .padding(.top, 6)
             .padding(.horizontal, style == .softGradient ? 7 : 0)
@@ -401,26 +441,32 @@ private struct DashboardCard: View {
                 }
             }
 
-            HStack(spacing: 5) {
-                Image(systemName: "clock")
-                ResetCountdownText(
-                    resetAt: window?.resetAt,
-                    prefix: "",
-                    expiredText: "即将刷新",
-                    compact: true
-                )
-                if let resetAt = window?.resetAt {
-                    Text("· 下次 \(resetAt.formatted(date: .omitted, time: .shortened))")
+            if !isBalanceMode {
+                HStack(spacing: 5) {
+                    Image(systemName: "clock")
+                    if let resetAt = window?.resetAt {
+                        Text(formatNextReset(resetAt))
+                    } else {
+                        Text("重置时间未知")
+                    }
                 }
+                .font(.system(size: 11, weight: .semibold, design: .rounded))
+                .foregroundStyle(secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 1)
             }
-            .font(.system(size: 11, weight: .semibold, design: .rounded))
-            .foregroundStyle(secondary)
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 1)
         }
         .foregroundStyle(foreground)
+    }
+
+    /// 格式化下次刷新时间：统一显示为"月-日"
+    private func formatNextReset(_ resetAt: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "zh_CN")
+        formatter.dateFormat = "MM-dd"
+        return "下次 \(formatter.string(from: resetAt))"
     }
 
     private func stat(title: String, value: String) -> some View {
@@ -447,6 +493,8 @@ private struct QuotaRing: View {
     let compact: Bool
     let style: DashboardDisplayStyle
     let showsCountdown: Bool
+    var displayText: String?
+    var displayMode: QuotaSnapshot.Provider.WindowDisplayMode?
 
     private var progress: Double {
         max(0, min(1, (remaining ?? 0) / 100))
@@ -459,7 +507,7 @@ private struct QuotaRing: View {
                     .stroke(primaryColor.opacity(0.13), lineWidth: compact ? 7 : 6)
 
                 Circle()
-                    .trim(from: 0, to: progress)
+                    .trim(from: 0, to: displayMode == .balance ? 1 : progress)
                     .stroke(
                         ringColor,
                         style: StrokeStyle(lineWidth: compact ? 7 : 6, lineCap: .round)
@@ -471,6 +519,8 @@ private struct QuotaRing: View {
                         .font(.system(size: compact ? 14 : 13, weight: .semibold))
                     Text(valueText)
                         .font(.system(size: compact ? 11 : 10, weight: .bold, design: .rounded))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                 }
                 .foregroundStyle(primaryColor.opacity(isAvailable ? 0.92 : 0.42))
             }
@@ -492,18 +542,7 @@ private struct QuotaRing: View {
                 }
 
                 if showsCountdown, let resetAt, isAvailable {
-                    ResetCountdownText(
-                        resetAt: resetAt,
-                        prefix: "",
-                        expiredText: "刷新中",
-                        compact: true
-                    )
-                    .font(.system(size: compact ? 10 : 9, weight: .semibold, design: .rounded))
-                    .foregroundStyle(primaryColor.opacity(0.64))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-
-                    Text("下次 \(resetAt.formatted(date: .omitted, time: .shortened))")
+                    Text("\(formatNextReset(resetAt))")
                         .font(.system(size: compact ? 9 : 8, weight: .medium, design: .rounded))
                         .foregroundStyle(primaryColor.opacity(0.56))
                         .lineLimit(1)
@@ -517,7 +556,13 @@ private struct QuotaRing: View {
     }
 
     private var valueText: String {
-        guard isAvailable, let remaining else { return "--" }
+        guard isAvailable else { return "--" }
+        // 余额模式：显示余额文本
+        if displayMode == .balance, let text = displayText {
+            return text
+        }
+        // 百分比模式
+        guard let remaining else { return "--" }
         return "\(Int(remaining.rounded()))%"
     }
 
@@ -540,6 +585,14 @@ private struct QuotaRing: View {
         guard let resetAt, isAvailable else { return "等待刷新时间" }
         if resetAt <= .now { return "额度即将刷新" }
         return "距离刷新还剩 \(resetAt.formatted(.relative(presentation: .named)))"
+    }
+
+    /// 格式化下次刷新时间：统一显示为"月-日"
+    private func formatNextReset(_ resetAt: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "zh_CN")
+        formatter.dateFormat = "MM-dd"
+        return "下次 \(formatter.string(from: resetAt))"
     }
 }
 
@@ -827,16 +880,13 @@ private struct PetQuotaWidgetView: View {
                 .font(.system(size: 11, weight: .semibold, design: .rounded))
                 .lineLimit(1)
                 .foregroundStyle(.white.opacity(0.9))
-            ResetCountdownText(
-                resetAt: selectedWindow?.resetAt,
-                prefix: "刷新剩余 ",
-                expiredText: "额度即将刷新",
-                compact: true
-            )
-            .font(.system(size: 9, weight: .semibold, design: .rounded))
-            .foregroundStyle(.white.opacity(0.7))
-            .lineLimit(1)
-            .frame(maxWidth: .infinity, alignment: .center)
+            if let resetAt = selectedWindow?.resetAt {
+                Text(formatNextReset(resetAt))
+                    .font(.system(size: 9, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.7))
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
         }
     }
 
@@ -858,15 +908,12 @@ private struct PetQuotaWidgetView: View {
                         .foregroundStyle(.white.opacity(0.72))
                 }
 
-                ResetCountdownText(
-                    resetAt: selectedWindow?.resetAt,
-                    prefix: "刷新剩余 ",
-                    expiredText: "额度即将刷新",
-                    compact: false
-                )
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.68))
-                .lineLimit(1)
+                if let resetAt = selectedWindow?.resetAt {
+                    Text(formatNextReset(resetAt))
+                        .font(.caption)
+                        .foregroundStyle(.white.opacity(0.68))
+                        .lineLimit(1)
+                }
             }
             Spacer(minLength: 0)
         }
@@ -907,6 +954,14 @@ private struct PetQuotaWidgetView: View {
         case .shortTerm: "短期额度"
         case .weekly: "周额度"
         }
+    }
+
+    /// 格式化下次刷新时间：统一显示为"月-日"
+    private func formatNextReset(_ resetAt: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "zh_CN")
+        formatter.dateFormat = "MM-dd"
+        return "下次 \(formatter.string(from: resetAt))"
     }
 }
 
