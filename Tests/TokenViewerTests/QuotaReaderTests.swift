@@ -145,13 +145,14 @@ final class QuotaReaderTests: XCTestCase {
         let object = try JSONSerialization.jsonObject(with: json)
         let windows = DeepSeekBalanceParser.parse(object: object)
 
-        XCTAssertEqual(windows.count, 2) // 总余额 + 充值
-        XCTAssertEqual(windows[0].name, "总余额")
+        // 余额信息：total_balance=9.99, topped_up_balance=9.99, granted_balance=0（不显示）
+        XCTAssertEqual(windows.count, 2) // 总余额 + 充值余额
+        XCTAssertEqual(windows[0].name, "总余额（CNY）（可用）")
         XCTAssertEqual(windows[0].displayText, "¥9.99")
         XCTAssertEqual(windows[0].displayMode, .balance)
         XCTAssertEqual(windows[0].usedPercent, 0) // 可用 → 0% 已用
 
-        XCTAssertEqual(windows[1].name, "充值")
+        XCTAssertEqual(windows[1].name, "充值余额（付费）")
         XCTAssertEqual(windows[1].displayText, "¥9.99")
     }
 
