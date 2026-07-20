@@ -64,9 +64,9 @@
 
 #### 桌面小组件预览
 
-| 仪表盘小组件（1×1 / 1×2） | 额度宠物小组件 |
-| :---: | :---: |
-| <img src="images/screenshoot.png" width="540" alt="仪表盘小组件截图"> | <img src="images/ui.png" width="160" alt="额度宠物小组件"> |
+| 仪表盘小组件（1×1 / 1×2） |
+| :---: |
+| <img src="images/screenshoot.png" width="540" alt="仪表盘小组件截图"> |
 
 **额度宠物状态：**
 

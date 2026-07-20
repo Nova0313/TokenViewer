@@ -66,9 +66,9 @@ Inspired by [CC Switch](https://github.com/farion1231/cc-switch) — fill in an 
 
 #### Desktop Widget Preview
 
-| Dashboard widget (1×1 / 1×2) | Quota pet widget |
-| :---: | :---: |
-| <img src="images/screenshoot.png" width="540" alt="Dashboard widget screenshot"> | <img src="images/ui.png" width="160" alt="Quota pet widget"> |
+| Dashboard widget (1×1 / 1×2) |
+| :---: |
+| <img src="images/screenshoot.png" width="540" alt="Dashboard widget screenshot"> |
 
 **Quota pet states:**
 
