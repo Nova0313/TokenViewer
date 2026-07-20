@@ -85,7 +85,15 @@ Inspired by [CC Switch](https://github.com/farion1231/cc-switch) — fill in an 
 
 ## Installation
 
-Currently, please build from source. Clone the repository and open the project:
+### Option 1: Download a prebuilt release (recommended)
+
+Go to the [Releases page](https://github.com/Nova0313/TokenViewer/releases), download the latest `TokenViewer-*.dmg`, mount it, and drag TokenViewer into the Applications folder.
+
+> On first launch you may see a warning that the developer cannot be verified. Go to **System Settings → Privacy & Security** and click "Open Anyway"; or run `xattr -dr com.apple.quarantine /Applications/TokenViewer.app` in Terminal.
+
+### Option 2: Build from source
+
+Clone the repository and open the project:
 
 ```bash
 git clone https://github.com/Nova0313/TokenViewer.git
@@ -98,6 +106,13 @@ In Xcode:
 1. Select your own development team for both the `TokenViewer` and `TokenViewerWidget` targets (`DEVELOPMENT_TEAM` is left empty in `project.yml`; contributors need to set it themselves).
 2. Confirm both targets use the same App Group; the default is `group.com.qianchen.tokenviewer.shared`.
 3. Select the `TokenViewer` scheme and click Run.
+
+You can also build a standalone menu bar app without the WidgetKit extension:
+
+```bash
+./scripts/build-app.sh
+open dist/TokenViewer.app
+```
 
 After launch, the app appears only in the menu bar and does not occupy the Dock.
 
@@ -131,13 +146,6 @@ Run the menu bar version directly:
 
 ```bash
 swift run TokenViewer
-```
-
-Build a standalone menu bar app without the WidgetKit extension:
-
-```bash
-./scripts/build-app.sh
-open dist/TokenViewer.app
 ```
 
 Run tests:

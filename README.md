@@ -83,7 +83,15 @@
 
 ## 安装
 
-目前请从源码构建。克隆仓库后打开工程：
+### 方式一：下载预编译版本（推荐）
+
+前往 [Releases 页面](https://github.com/Nova0313/TokenViewer/releases) 下载最新版 `TokenViewer-*.dmg`，双击挂载后将 TokenViewer 拖入 Applications 文件夹即可。
+
+> 首次打开如果提示"无法验证开发者"，请前往 **系统设置 → 隐私与安全性**，点击"仍要打开"以允许运行；或在终端执行 `xattr -dr com.apple.quarantine /Applications/TokenViewer.app`。
+
+### 方式二：从源码构建
+
+克隆仓库后打开工程：
 
 ```bash
 git clone https://github.com/Nova0313/TokenViewer.git
@@ -96,6 +104,13 @@ open TokenViewer.xcodeproj
 1. 为 `TokenViewer` 和 `TokenViewerWidget` 两个 Target 选择你自己的开发团队（`DEVELOPMENT_TEAM` 已在 `project.yml` 中留空，贡献者需自行设置）。
 2. 确认两个 Target 使用同一个 App Group；默认配置为 `group.com.qianchen.tokenviewer.shared`。
 3. 选择 `TokenViewer` Scheme，点击 Run。
+
+也可以使用脚本构建不含 WidgetKit 扩展的独立菜单栏 App：
+
+```bash
+./scripts/build-app.sh
+open dist/TokenViewer.app
+```
 
 > 语言 / Language: [简体中文](README.md) | [English](README_EN.md)
 
